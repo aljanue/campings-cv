@@ -1,11 +1,15 @@
 package xabier.alberto.uv.es.campingscv
 
+import android.app.SearchManager
+import android.content.Intent
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONObject
@@ -22,7 +26,30 @@ class MainActivity : AppCompatActivity() {
         rv.layoutManager = LinearLayoutManager(this)
         rv.adapter = MyAdapter(campings)
     }
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val rv: RecyclerView = findViewById(R.id.rv)
+        val adapter = rv.adapter as MyAdapter
+        when (item.itemId) {
+            R.id.order_by_stars -> {
+                adapter.data = adapter.data.sortedByDescending {
+                    try {
+                        it.estrellas.replace("e", "").toInt()
+                    } catch (e: NumberFormatException) {
+                        Int.MIN_VALUE
+                    }
+                }
+            }
+            R.id.order_by_name_a_z -> {
+                adapter.data = adapter.data.sortedBy { it.nombre }
+            }
+            R.id.order_by_name_z_a -> {
+                adapter.data = adapter.data.sortedByDescending { it.nombre }
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+        adapter.notifyDataSetChanged()
+        return true
+    }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         Log.d("MenuCreado", "ESTOY EN onCreateOptionsMenu ANTES DE INFLAR EL MENU")
         menuInflater.inflate(R.menu.options_menu, menu)

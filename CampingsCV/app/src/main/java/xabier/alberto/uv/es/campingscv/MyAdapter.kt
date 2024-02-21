@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class MyAdapter(val data: List<Camping>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+class MyAdapter(var data: List<Camping>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
     class MyViewHolder(val row: View) : RecyclerView.ViewHolder(row) {
         val nombre = row.findViewById<TextView>(R.id.nombre_lugar)
         val estrellas = row.findViewById<TextView>(R.id.estrellas)
