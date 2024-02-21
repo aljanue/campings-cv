@@ -3,6 +3,7 @@ package xabier.alberto.uv.es.campingscv
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,8 @@ import java.io.InputStream
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("MainActivity", "ESTOY EN onCreate")
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val campings = getData()
@@ -21,7 +24,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        Log.d("MenuCreado", "ESTOY EN onCreateOptionsMenu ANTES DE INFLAR EL MENU")
         menuInflater.inflate(R.menu.options_menu, menu)
+        Log.d("MenuCreado", "ESTOY EN onCreateOptionsMenu DESPUES DE INFLAR EL MENU")
+
         return true
     }
 
