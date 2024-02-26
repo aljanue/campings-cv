@@ -20,8 +20,7 @@ class MyAdapter(var data: List<Camping>) : RecyclerView.Adapter<MyAdapter.MyView
     }
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.nombre.text = data.get(position).nombre + ", " + data.get(position).municipio
-        val estrellasSinE = data.get(position).estrellas.replace("e", "")
-        holder.estrellas.text = estrellasSinE
+        holder.estrellas.text = data.get(position).estrellas
     }
     override fun getItemCount(): Int = data.size
 }
