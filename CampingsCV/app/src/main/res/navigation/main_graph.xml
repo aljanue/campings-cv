@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_navigation"
+    app:startDestination="@id/campingList">
+
+    <fragment
+        android:id="@+id/campingList"
+        android:name="xabier.alberto.uv.es.campingscv.CampingList"
+        android:label="fragment_alphabet"
+        tools:layout="@layout/camping_list" >
+        <action
+            android:id="@+id/navigateToCamping"
+            app:destination="@id/campingInfo"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"/>
+    </fragment>
+    <fragment
+        android:id="@+id/campingInfo"
+        android:name="xabier.alberto.uv.es.campingscv.CampingInfo"
+        android:label="fragment_word"
+        tools:layout="@layout/camping_info" >
+    </fragment>
+</navigation>

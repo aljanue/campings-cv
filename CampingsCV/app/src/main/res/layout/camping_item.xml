@@ -16,7 +16,7 @@
         android:gravity="center">
 
         <TextView
-            android:id="@+id/nombre_lugar"
+            android:id="@+id/nombre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

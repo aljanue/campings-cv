@@ -3,4 +3,6 @@
     <string name="sort_by_stars">Sort by stars</string>
     <string name="sort_by_name_a_z">Sort by name A-Z</string>
     <string name="sort_by_name_z_a">Sort by name Z-A</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#C3E2E8"
     android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,19 +12,19 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="3dp"
         app:cardElevation="4dp"
+        android:layout_margin="10dp"
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
+            android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/nombre_lugar"
+                android:id="@+id/nombre"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="25dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -68,9 +68,12 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         app:cardCornerRadius="3dp"
         app:cardElevation="4dp"
-        app:cardUseCompatPadding="true" >
+        app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,13 +84,16 @@
                 android:id="@+id/modalidad"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
-                android:layout_margin="8dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="end"
                 android:text="Modalidad" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="8dp"
+                android:layout_margin="20dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
@@ -103,8 +109,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Municipio"
-                    android:textAlignment="textEnd" />
+                    android:text="Municipio" />
 
             </LinearLayout>
 
@@ -112,19 +117,20 @@
                 android:id="@+id/direccion"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="8dp"
+                android:layout_margin="20dp"
                 android:layout_weight="1"
                 android:text="Direccion" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
-                android:layout_margin="8dp"
+                android:layout_margin="20dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="35dp"
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
@@ -192,7 +198,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="8dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -215,7 +223,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="8dp"
+                android:layout_margin="20dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
@@ -231,8 +239,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Dias"
-                    android:textAlignment="textEnd" />
+                    android:text="Dias" />
 
             </LinearLayout>
 

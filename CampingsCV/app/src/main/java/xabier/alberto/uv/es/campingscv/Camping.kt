@@ -1,5 +1,8 @@
 package xabier.alberto.uv.es.campingscv
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Camping(
     val nombre: String,
     val estrellas: String,
@@ -13,7 +16,5 @@ data class Camping(
     val modalidad: String,
     val plazas_parcela: String,
     val plazas_bungalow: String,
-    val libre_acampada: String,
-
-
-)
+    val libre_acampada: String
+) : Parcelable
