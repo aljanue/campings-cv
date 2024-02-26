@@ -104,9 +104,18 @@ class CampingList : Fragment() {
             val periodo = camping.getString("Periodo")
             val dias = camping.getString("Días Periodo")
             val modalidad = camping.getString("Modalidad")
-            val plazas_parcela = camping.getString("Plazas Parcela")
-            val plazas_bungalow = camping.getString("Plaza Bungalows")
-            val libre_acampada = camping.getString("Plazas Libre Acampada")
+            var plazas_parcela = camping.getString("Plazas Parcela")
+            if (plazas_parcela == "" || plazas_parcela == " ") {
+                plazas_parcela = "0"
+            }
+            var plazas_bungalow = camping.getString("Plaza Bungalows")
+            if (plazas_bungalow == "" || plazas_bungalow == " ") {
+                plazas_bungalow = "0"
+            }
+            var libre_acampada = camping.getString("Plazas Libre Acampada")
+            if (libre_acampada == "" || libre_acampada == " ") {
+                libre_acampada = "0"
+            }
             val campingObject = Camping(nombre, estrellas, direccion, provincia, municipio, web, email, periodo, dias, modalidad, plazas_parcela, plazas_bungalow, libre_acampada)
 
             listaCampings.add(campingObject)
