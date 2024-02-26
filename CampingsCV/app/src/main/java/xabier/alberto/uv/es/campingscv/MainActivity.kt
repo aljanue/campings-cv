@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             R.id.order_by_stars -> {
                 adapter.data = adapter.data.sortedByDescending {
                     try {
-                        it.estrellas.replace("⭐", "").toInt()
+                        it.estrellas.replace(" ⭐", "").toInt()
                     } catch (e: NumberFormatException) {
                         Int.MIN_VALUE
                     }
@@ -77,11 +77,11 @@ class MainActivity : AppCompatActivity() {
             val nombre = camping.getString("Nombre")
             var estrellas = camping.getString("Cod. Categoria")
             when (estrellas) {
-                "1", "1e" -> estrellas = "1⭐"
-                "2", "2e" -> estrellas = "2⭐"
-                "3", "3e" -> estrellas = "3⭐"
-                "4", "4e" -> estrellas = "4⭐"
-                "5", "5e" -> estrellas = "5⭐"
+                "1", "1e" -> estrellas = "1 ⭐"
+                "2", "2e" -> estrellas = "2 ⭐"
+                "3", "3e" -> estrellas = "3 ⭐"
+                "4", "4e" -> estrellas = "4 ⭐"
+                "5", "5e" -> estrellas = "5 ⭐"
             }
             val direccion = camping.getString("Direccion")
             val provincia = camping.getString("Provincia")
