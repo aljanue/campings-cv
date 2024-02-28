@@ -3,11 +3,16 @@ package xabier.alberto.uv.es.campingscv
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 
 class CampingInfo : Fragment() {
 
@@ -17,6 +22,8 @@ class CampingInfo : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.camping_info, container, false)
+
+        Log.d("InfoFragment", "ESTOY EN onCreateView")
 
         // Aquí puedes obtener los datos del camping del Bundle y mostrarlos en la vista
         val camping = arguments?.getParcelable<Camping>("camping")
@@ -50,7 +57,50 @@ class CampingInfo : Fragment() {
         plazas_bungalowID.text = camping?.plazas_bungalow
         libre_acampadaID.text = camping?.libre_acampada
 
+        // Activamos menú de opciones
+        setHasOptionsMenu(true)
 
         return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        Log.d("InfoFragment", "ESTOY EN onCreateOptionsMenu ANTES DE INFLAR EL MENU")
+        inflater.inflate(R.menu.info_options, menu)
+        Log.d("InfoFragment", "ESTOY EN onCreateOptionsMenu DESPUES DE INFLAR EL MENU")
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val rv: RecyclerView = view?.findViewById(R.id.rv) ?: return false
+        val adapter = rv.adapter as MyAdapter
+        val camping = arguments?.getParcelable<Camping>("camping")
+        when (item.itemId) {
+            R.id.maps -> {
+                val mapID = camping?.direccion
+                if (mapID != null && mapID != "" && mapID != " ") {
+                    val mapIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("geo:0,0?q=" + mapID))
+                    startActivity(mapIntent)
+                }
+                else {
+                    val toast = android.widget.Toast.makeText(context, "No hay dirección", android.widget.Toast.LENGTH_SHORT)
+                    toast.show()
+                }
+            }
+            R.id.website -> {
+                var webID = camping?.web
+                if (webID != null && webID != "" && webID != " ") {
+                    if (!webID.startsWith("http://") && !webID.startsWith("https://"))
+                        webID = "http://" + webID
+                    val browserIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(webID))
+                    startActivity(browserIntent)
+                }
+                else {
+                    val toast = android.widget.Toast.makeText(context, "No hay página web", android.widget.Toast.LENGTH_SHORT)
+                    toast.show()
+                }
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+        adapter.notifyDataSetChanged()
+        return true
     }
 }
