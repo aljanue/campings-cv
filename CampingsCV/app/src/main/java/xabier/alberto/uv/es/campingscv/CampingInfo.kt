@@ -70,9 +70,8 @@ class CampingInfo : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val rv: RecyclerView = view?.findViewById(R.id.rv) ?: return false
-        val adapter = rv.adapter as MyAdapter
         val camping = arguments?.getParcelable<Camping>("camping")
+
         when (item.itemId) {
             R.id.maps -> {
                 val mapID = camping?.direccion
@@ -100,7 +99,6 @@ class CampingInfo : Fragment() {
             }
             else -> return super.onOptionsItemSelected(item)
         }
-        adapter.notifyDataSetChanged()
         return true
     }
 }
