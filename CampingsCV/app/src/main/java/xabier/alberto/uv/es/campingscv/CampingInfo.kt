@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 
 class CampingInfo : Fragment() {
+    var web: String? = null
+    var direccion: String? = null
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -43,12 +45,15 @@ class CampingInfo : Fragment() {
         val plazas_bungalowID = view.findViewById<TextView>(R.id.bungalow)
         val libre_acampadaID = view.findViewById<TextView>(R.id.libre)
 
+        web = camping?.web
+        direccion = camping?.direccion
+
         nombreID.text = camping?.nombre
         estrellasID.text = camping?.estrellas
-        direccionID.text = Html.fromHtml("<b>DIRECCIÓN</b><br><br>" + camping?.direccion, Html.FROM_HTML_MODE_COMPACT)
+        direccionID.text = Html.fromHtml("<b>DIRECCIÓN</b><br><br>" + direccion, Html.FROM_HTML_MODE_COMPACT)
         provinciaID.text = Html.fromHtml("<b>PROVINCIA</b><br><br>" + camping?.provincia, Html.FROM_HTML_MODE_COMPACT)
         municipioID.text = Html.fromHtml("<b>MUNICIPIO</b><br><br>" + camping?.municipio, Html.FROM_HTML_MODE_COMPACT)
-        webID.text = Html.fromHtml("<b>WEB</b><br>" + camping?.web, Html.FROM_HTML_MODE_COMPACT)
+        webID.text = Html.fromHtml("<b>WEB</b><br>" + web, Html.FROM_HTML_MODE_COMPACT)
         emailID.text = Html.fromHtml("<b>EMAIL</b><br>" + camping?.email, Html.FROM_HTML_MODE_COMPACT)
         periodoID.text = Html.fromHtml("<b>PERIODO</b><br><br>" + camping?.periodo, Html.FROM_HTML_MODE_COMPACT)
         diasID.text = Html.fromHtml("<b>DÍAS</b><br><br>" + camping?.dias, Html.FROM_HTML_MODE_COMPACT)
@@ -70,13 +75,11 @@ class CampingInfo : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val camping = arguments?.getParcelable<Camping>("camping")
 
         when (item.itemId) {
             R.id.maps -> {
-                val mapID = camping?.direccion
-                if (mapID != null && mapID != "" && mapID != " ") {
-                    val mapIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("geo:0,0?q=" + mapID))
+                if (direccion != null && direccion != "" && direccion != " ") {
+                    val mapIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("geo:0,0?q=" + direccion))
                     startActivity(mapIntent)
                 }
                 else {
@@ -85,11 +88,10 @@ class CampingInfo : Fragment() {
                 }
             }
             R.id.website -> {
-                var webID = camping?.web
-                if (webID != null && webID != "" && webID != " ") {
-                    if (!webID.startsWith("http://") && !webID.startsWith("https://"))
-                        webID = "http://" + webID
-                    val browserIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(webID))
+                if (web != null && web != "" && web != " ") {
+                    if (!web!!.startsWith("http://") && !web!!.startsWith("https://"))
+                        web = "http://" + web
+                    val browserIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(web))
                     startActivity(browserIntent)
                 }
                 else {
