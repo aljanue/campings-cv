@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 
+@Suppress("DEPRECATION")
 class CampingInfo : Fragment() {
     var web: String? = null
     var direccion: String? = null
@@ -28,7 +29,7 @@ class CampingInfo : Fragment() {
         Log.d("InfoFragment", "ESTOY EN onCreateView")
 
         // Aquí puedes obtener los datos del camping del Bundle y mostrarlos en la vista
-        val camping = arguments?.getParcelable<Camping>("camping")
+        val camping = arguments?.getSerializable("camping") as? Camping
 
         // TODO: Mostrar los datos del camping en la vista
         val nombreID = view.findViewById<TextView>(R.id.nombre)

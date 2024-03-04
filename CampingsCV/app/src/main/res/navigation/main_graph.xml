@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -15,11 +14,22 @@
             app:destination="@id/campingInfo"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"/>
+        <action
+            android:id="@+id/navigateToFavList"
+            app:destination="@id/favList"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/campingInfo"
         android:name="xabier.alberto.uv.es.campingscv.CampingInfo"
         android:label="fragment_word"
         tools:layout="@layout/camping_info" >
+    </fragment>
+    <fragment
+        android:id="@+id/favList"
+        android:name="xabier.alberto.uv.es.campingscv.favCampingList"
+        android:label="fragment_word"
+        tools:layout="@layout/fav_camping_list" >
     </fragment>
 </navigation>

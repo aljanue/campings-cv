@@ -4,7 +4,9 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONObject
@@ -35,6 +37,23 @@ class CampingList : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupCampingList(view)
+        val favListButton: Button = view.findViewById(R.id.fav_list)
+        favListButton.setOnClickListener {
+            findNavController().navigate(R.id.favList)
+        }
+    }
+
+    private fun setupCampingList(view: View) {
+        val campings = getData()
+        val rv: RecyclerView = view.findViewById(R.id.rv)
+        rv.layoutManager = LinearLayoutManager(context)
+        rv.adapter = MyAdapter(campings) { camping ->
+            (requireActivity() as MainActivity).showCampingDetail(camping as Camping)
+        }
+    }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         Log.d("MenuCreado", "ESTOY EN onCreateOptionsMenu ANTES DE INFLAR EL MENU")
         inflater.inflate(R.menu.options_menu, menu)
