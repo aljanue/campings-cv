@@ -63,9 +63,9 @@ class CampingList : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 // Filtra tu lista de campings basándote en el texto de búsqueda
                 val filteredList = campings.filter { camping ->
-                    camping.nombre.contains(newText ?: "", ignoreCase = true) ||
-                            camping.provincia.contains(newText ?: "", ignoreCase = true) ||
-                            camping.municipio.contains(newText ?: "", ignoreCase = true)
+                    camping.nombre!!.contains(newText ?: "", ignoreCase = true) ||
+                            camping.provincia!!.contains(newText ?: "", ignoreCase = true) ||
+                            camping.municipio!!.contains(newText ?: "", ignoreCase = true)
                 }
 
                 // Actualiza tu adaptador con la lista filtrada
@@ -180,7 +180,7 @@ class CampingList : Fragment() {
             if (libre_acampada == "" || libre_acampada == " ") {
                 libre_acampada = "0"
             }
-            val campingObject = Camping(nombre, estrellas, direccion, provincia, municipio, web, email, periodo, dias, modalidad, plazas_parcela, plazas_bungalow, libre_acampada)
+            val campingObject = Camping(id+1, nombre, estrellas, direccion, provincia, municipio, web, email, periodo, dias, modalidad, plazas_parcela, plazas_bungalow, libre_acampada)
 
             listaCampings.add(campingObject)
         }

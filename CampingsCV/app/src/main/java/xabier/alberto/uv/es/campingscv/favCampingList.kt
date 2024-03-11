@@ -10,6 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
+import xabier.alberto.uv.es.campingscv.database.AppDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class favCampingList : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,11 +29,20 @@ class favCampingList : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fav_camping_list, container, false)
 
-        val campings = getData()
-        val rv: RecyclerView = view.findViewById(R.id.rv)
-        rv.layoutManager = LinearLayoutManager(context)
-        rv.adapter = favAdapter(campings) { camping ->
-            (requireActivity() as MainActivity).showCampingDetail(camping as Camping)
+        // Obtén una referencia a tu base de datos
+        val db = Room.databaseBuilder(requireContext(), AppDatabase::class.java, "database").build()
+        CoroutineScope(Dispatchers.IO).launch {
+            val userDao = db.userDao()
+
+            val campings = userDao.getAll()
+
+            withContext(Dispatchers.Main) {
+                val rv: RecyclerView = view.findViewById(R.id.rv)
+                rv.layoutManager = LinearLayoutManager(context)
+                rv.adapter = favAdapter(campings) { camping ->
+                    (requireActivity() as MainActivity).showCampingDetail(camping as Camping)
+                }
+            }
         }
         return view
     }
@@ -38,19 +53,20 @@ class favCampingList : Fragment() {
     }
 
     private fun setupCampingList(view: View) {
-        val campings = getData()
-        val rv: RecyclerView = view.findViewById(R.id.rv)
-        rv.layoutManager = LinearLayoutManager(context)
-        rv.adapter = MyAdapter(campings) { camping ->
-            (requireActivity() as MainActivity).showCampingDetail(camping as Camping)
+        // Obtén una referencia a tu base de datos
+        val db = Room.databaseBuilder(requireContext(), AppDatabase::class.java, "database").build()
+        CoroutineScope(Dispatchers.IO).launch {
+            val userDao = db.userDao()
+
+            val campings = userDao.getAll()
+
+            withContext(Dispatchers.Main) {
+                val rv: RecyclerView = view.findViewById(R.id.rv)
+                rv.layoutManager = LinearLayoutManager(context)
+                rv.adapter = favAdapter(campings) { camping ->
+                    (requireActivity() as MainActivity).showCampingDetail(camping as Camping)
+                }
+            }
         }
-    }
-
-
-    fun getData(): MutableList<Camping> {
-        //TODO: Get data from database
-
-
-        return mutableListOf<Camping>()
     }
 }

@@ -10,9 +10,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import androidx.room.Room
+import xabier.alberto.uv.es.campingscv.database.AppDatabase
 
 @Suppress("DEPRECATION")
 class CampingInfo : Fragment() {
@@ -62,6 +67,38 @@ class CampingInfo : Fragment() {
         plazas_parcelaID.text = camping?.plazas_parcela
         plazas_bungalowID.text = camping?.plazas_bungalow
         libre_acampadaID.text = camping?.libre_acampada
+
+        // Referencia al botón de favoritos
+        val imageView = view.findViewById<ImageView>(R.id.favorito)
+        // valores del camping
+        val campingData = Camping(camping?.cid, camping?.nombre, camping?.estrellas, direccion, camping?.provincia, camping?.municipio, web, camping?.email, camping?.periodo, camping?.dias, camping?.modalidad, camping?.plazas_parcela, camping?.plazas_bungalow, camping?.libre_acampada)
+        // Obtén una referencia a tu base de datos
+        val db = Room.databaseBuilder(requireContext(),AppDatabase::class.java, "database").build()
+        val userDao = db.userDao()
+
+        // Establecer el tag inicial
+        imageView.setTag(R.drawable.black_like)
+
+        imageView.setOnClickListener {
+            // Comprueba el tag actual y cambia el recurso de la imagen y el tag en consecuencia
+            if (imageView.getTag() == R.drawable.black_like) {
+                imageView.setImageResource(R.drawable.red_like)
+                imageView.setTag(R.drawable.red_like)
+
+                // Agrega el camping a la base de datos de favoritos
+                CoroutineScope(Dispatchers.IO).launch {
+                    userDao.insertAll(campingData)
+                }
+            } else {
+                imageView.setImageResource(R.drawable.black_like)
+                imageView.setTag(R.drawable.black_like)
+
+                // Elimina el camping de la base de datos de favoritos
+                CoroutineScope(Dispatchers.IO).launch {
+                    userDao.delete(campingData)
+                }
+            }
+        }
 
         // Activamos menú de opciones
         setHasOptionsMenu(true)

@@ -254,28 +254,14 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/no_like"
+                android:id="@+id/favorito"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:src="@drawable/black_like"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/black_like" />
-
-            <ImageView
-                android:id="@+id/like"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="-20dp"
-                android:scaleX="1"
-                android:scaleY="1"
-                android:src="@drawable/red_like"
-                app:layout_constraintEnd_toStartOf="@+id/no_like"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/red_like" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
