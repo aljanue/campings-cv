@@ -25,5 +25,9 @@ class MyAdapter(var data: List<Camping>, val clickListener: (Any) -> Unit) : Rec
             clickListener(data[position])
         }
     }
+    fun updateList(newList: List<Camping>) {
+        this.data = newList
+        notifyDataSetChanged()
+    }
     override fun getItemCount(): Int = data.size
 }

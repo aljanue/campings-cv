@@ -4,15 +4,23 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Button
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.*
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okio.IOException
 import org.json.JSONObject
 import java.io.InputStream
 
 class CampingList : Fragment() {
+
+    private lateinit var campings: List<Camping>
+    private lateinit var campingAdapter: MyAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("MainFragment", "ESTOY EN onCreate")
@@ -23,13 +31,14 @@ class CampingList : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.camping_list, container, false)
 
-        Log.d("MainFragment", "ESTOY EN onCreateView")
-
-        val campings = getData()
-        val rv: RecyclerView = view.findViewById(R.id.rv)
-        rv.layoutManager = LinearLayoutManager(context)
-        rv.adapter = MyAdapter(campings) { camping ->
-            (requireActivity() as MainActivity).showCampingDetail(camping as Camping)
+        getData { campings ->
+            this.campings = campings
+            val rv: RecyclerView = view.findViewById(R.id.rv)
+            rv.layoutManager = LinearLayoutManager(context)
+            campingAdapter = MyAdapter(campings) { camping ->
+                (requireActivity() as MainActivity).showCampingDetail(camping as Camping)
+            }
+            rv.adapter = campingAdapter
         }
 
         setHasOptionsMenu(true)
@@ -37,21 +46,45 @@ class CampingList : Fragment() {
         return view
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupCampingList(view)
-        val favListButton: Button = view.findViewById(R.id.fav_list)
+        val favListButton: FloatingActionButton = view.findViewById(R.id.fav_list)
         favListButton.setOnClickListener {
             findNavController().navigate(R.id.favList)
         }
+        val searchView: SearchView = view.findViewById(R.id.search_view)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // Filtra tu lista de campings basándote en el texto de búsqueda
+                val filteredList = campings.filter { camping ->
+                    camping.nombre.contains(newText ?: "", ignoreCase = true) ||
+                            camping.provincia.contains(newText ?: "", ignoreCase = true) ||
+                            camping.municipio.contains(newText ?: "", ignoreCase = true)
+                }
+
+                // Actualiza tu adaptador con la lista filtrada
+                campingAdapter.updateList(filteredList)
+                return false
+            }
+        })
     }
 
     private fun setupCampingList(view: View) {
-        val campings = getData()
         val rv: RecyclerView = view.findViewById(R.id.rv)
         rv.layoutManager = LinearLayoutManager(context)
-        rv.adapter = MyAdapter(campings) { camping ->
-            (requireActivity() as MainActivity).showCampingDetail(camping as Camping)
+        getData { campings ->
+            // Aquí puedes actualizar la UI con la lista de campings
+            val rv: RecyclerView = view.findViewById(R.id.rv)
+            rv.layoutManager = LinearLayoutManager(context)
+            rv.adapter = MyAdapter(campings) { camping ->
+                (requireActivity() as MainActivity).showCampingDetail(camping as Camping)
+            }
         }
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -93,19 +126,31 @@ class CampingList : Fragment() {
         return String(buffer, Charsets.UTF_8)
     }
 
-    private fun getData(): ArrayList<Camping> {
+    private fun getData(callback: (List<Camping>) -> Unit) {
         val listaCampings = ArrayList<Camping>()
-        val rawResourceId = R.raw.datastore_search
-        val jsonFileContent = readJsonFromRaw(resources, rawResourceId)
-        // Parsear el contenido JSON utilizando JSONObject o JSONArray
-        val jsonObject = JSONObject(jsonFileContent)
-        val jsonResult = jsonObject.getJSONObject("result")
-        //TODO: obtener el JsonArray “records”
-        val records = jsonResult.getJSONArray("records")
-        // Ahora puedes iterar a través del array o acceder a valores específicos
-        // TODO: read the data of each camping from records array, create a new Camping
-        for (i in 0 until records.length()) {
-            val camping = records.getJSONObject(i)
+        val url = "https://dadesobertes.gva.es/api/3/action/datastore_search?id=2ddaf823-5da4-4459-aa57-5bfe9f9eb474"
+
+        val request = Request.Builder()
+            .url(url)
+            .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
+            .addHeader("Accept", "application/json;")
+            .addHeader("Accept-Language", "es")
+            .build()
+
+        val client = OkHttpClient()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = client.newCall(request).execute()
+
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+            val responseBody = response.body?.string()
+            val jsonObject = JSONObject(responseBody)
+            val jsonResult = jsonObject.getJSONObject("result")
+            val records = jsonResult.getJSONArray("records")
+
+            for (i in 0 until records.length()) {
+                val camping = records.getJSONObject(i)
             val nombre = camping.getString("Nombre")
             var estrellas = camping.getString("Cod. Categoria")
             when (estrellas) {
@@ -139,7 +184,9 @@ class CampingList : Fragment() {
 
             listaCampings.add(campingObject)
         }
-        // object, and insert it into the campings ArrayList.
-        return listaCampings
+            withContext(Dispatchers.Main) {
+                callback(listaCampings)
+            }
+        }
     }
 }
