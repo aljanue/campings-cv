@@ -32,7 +32,7 @@
         android:label="fragment_word"
         tools:layout="@layout/fav_camping_list" >
         <action
-            android:id="@+id/action_favList_to_campingInfo"
+            android:id="@+id/navigateToCamping"
             app:destination="@id/campingInfo" />
     </fragment>
 </navigation>

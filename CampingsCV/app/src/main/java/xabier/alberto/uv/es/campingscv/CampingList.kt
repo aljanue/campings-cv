@@ -118,13 +118,6 @@ class CampingList : Fragment() {
         return true
     }
 
-    fun readJsonFromRaw(resources: Resources, rawResourceId: Int): String {
-        val inputStream: InputStream = resources.openRawResource(rawResourceId)
-        val buffer = ByteArray(inputStream.available())
-        inputStream.read(buffer)
-        inputStream.close()
-        return String(buffer, Charsets.UTF_8)
-    }
 
     private fun getData(callback: (List<Camping>) -> Unit) {
         val listaCampings = ArrayList<Camping>()
@@ -180,7 +173,8 @@ class CampingList : Fragment() {
             if (libre_acampada == "" || libre_acampada == " ") {
                 libre_acampada = "0"
             }
-            val campingObject = Camping(id+1, nombre, estrellas, direccion, provincia, municipio, web, email, periodo, dias, modalidad, plazas_parcela, plazas_bungalow, libre_acampada)
+                val isFavorito = false
+            val campingObject = Camping(id+1, nombre, estrellas, direccion, provincia, municipio, web, email, periodo, dias, modalidad, plazas_parcela, plazas_bungalow, libre_acampada, isFavorito)
 
             listaCampings.add(campingObject)
         }

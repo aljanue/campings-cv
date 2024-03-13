@@ -50,6 +50,7 @@ class favCampingList : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupCampingList(view)
+
     }
 
     private fun setupCampingList(view: View) {

@@ -19,5 +19,6 @@ data class Camping(
     val modalidad: String?,
     val plazas_parcela: String?,
     val plazas_bungalow: String?,
-    val libre_acampada: String?
+    val libre_acampada: String?,
+    @ColumnInfo(name = "isFavorito") var isFavorito: Boolean? // Nueva propiedad
 ) : Serializable

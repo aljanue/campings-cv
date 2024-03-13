@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.room.Room
+import kotlinx.coroutines.withContext
 import xabier.alberto.uv.es.campingscv.database.AppDatabase
 
 @Suppress("DEPRECATION")
@@ -70,14 +71,33 @@ class CampingInfo : Fragment() {
 
         // Referencia al botón de favoritos
         val imageView = view.findViewById<ImageView>(R.id.favorito)
-        // valores del camping
-        val campingData = Camping(camping?.cid, camping?.nombre, camping?.estrellas, direccion, camping?.provincia, camping?.municipio, web, camping?.email, camping?.periodo, camping?.dias, camping?.modalidad, camping?.plazas_parcela, camping?.plazas_bungalow, camping?.libre_acampada)
-        // Obtén una referencia a tu base de datos
-        val db = Room.databaseBuilder(requireContext(),AppDatabase::class.java, "database").build()
+
+// Obtén una referencia a tu base de datos
+        val db = Room.databaseBuilder(requireContext(),AppDatabase::class.java, "database").fallbackToDestructiveMigration().build()
         val userDao = db.userDao()
 
-        // Establecer el tag inicial
-        imageView.setTag(R.drawable.black_like)
+// valores del camping
+        var campingData = Camping(camping?.cid, camping?.nombre, camping?.estrellas, direccion, camping?.provincia, camping?.municipio, web, camping?.email, camping?.periodo, camping?.dias, camping?.modalidad, camping?.plazas_parcela, camping?.plazas_bungalow, camping?.libre_acampada, camping?.isFavorito)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            // Comprueba si el camping está en la lista de favoritos
+            val favoriteCamping = campingData.nombre?.let { userDao.findByName(it) }
+            if (favoriteCamping != null) {
+                campingData.isFavorito = true
+            }
+
+            withContext(Dispatchers.Main) {
+                // Establecer el tag inicial
+                if (campingData.isFavorito == true) {
+                    imageView.setImageResource(R.drawable.red_like)
+                    imageView.setTag(R.drawable.red_like)
+                } else {
+                    imageView.setImageResource(R.drawable.black_like)
+                    imageView.setTag(R.drawable.black_like)
+                }
+            }
+        }
+
 
         imageView.setOnClickListener {
             // Comprueba el tag actual y cambia el recurso de la imagen y el tag en consecuencia
@@ -87,6 +107,7 @@ class CampingInfo : Fragment() {
 
                 // Agrega el camping a la base de datos de favoritos
                 CoroutineScope(Dispatchers.IO).launch {
+                    campingData.isFavorito = true
                     userDao.insertAll(campingData)
                 }
             } else {
@@ -95,6 +116,7 @@ class CampingInfo : Fragment() {
 
                 // Elimina el camping de la base de datos de favoritos
                 CoroutineScope(Dispatchers.IO).launch {
+                    campingData.isFavorito = false
                     userDao.delete(campingData)
                 }
             }

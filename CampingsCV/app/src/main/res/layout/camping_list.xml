@@ -11,11 +11,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="20dp"
+        android:layout_margin="20dp"
         android:orientation="vertical"
         android:paddingBottom="20dp"
         tools:layout_editor_absoluteX="20dp"
         tools:layout_editor_absoluteY="20dp">
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="TODOS LOS CAMPINGS"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold"  />
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view"
