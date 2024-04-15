@@ -3,7 +3,6 @@ package xabier.alberto.uv.es.campingscv.database
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import xabier.alberto.uv.es.campingscv.Camping
 
@@ -18,8 +17,8 @@ interface CampingDAO {
     @Query("SELECT * FROM camping WHERE nombre LIKE :name LIMIT 1")
     fun findByName(name: String): Camping
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg campings: Camping)
+    @Insert
+    fun insert(camping: Camping)
 
     @Delete
     fun delete(camping: Camping)

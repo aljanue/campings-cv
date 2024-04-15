@@ -144,40 +144,40 @@ class CampingList : Fragment() {
 
             for (i in 0 until records.length()) {
                 val camping = records.getJSONObject(i)
-            val nombre = camping.getString("Nombre")
-            var estrellas = camping.getString("Cod. Categoria")
-            when (estrellas) {
-                "1", "1e" -> estrellas = "1 ⭐"
-                "2", "2e" -> estrellas = "2 ⭐"
-                "3", "3e" -> estrellas = "3 ⭐"
-                "4", "4e" -> estrellas = "4 ⭐"
-                "5", "5e" -> estrellas = "5 ⭐"
-            }
-            val direccion = camping.getString("Direccion")
-            val provincia = camping.getString("Provincia")
-            val municipio = camping.getString("Municipio")
-            val web = camping.getString("Web")
-            val email = camping.getString("Email")
-            val periodo = camping.getString("Periodo")
-            val dias = camping.getString("Días Periodo")
-            val modalidad = camping.getString("Modalidad")
-            var plazas_parcela = camping.getString("Plazas Parcela")
-            if (plazas_parcela == "" || plazas_parcela == " ") {
-                plazas_parcela = "0"
-            }
-            var plazas_bungalow = camping.getString("Plaza Bungalows")
-            if (plazas_bungalow == "" || plazas_bungalow == " ") {
-                plazas_bungalow = "0"
-            }
-            var libre_acampada = camping.getString("Plazas Libre Acampada")
-            if (libre_acampada == "" || libre_acampada == " ") {
-                libre_acampada = "0"
-            }
+                val nombre = camping.getString("Nombre")
+                var estrellas = camping.getString("Cod. Categoria")
+                when (estrellas) {
+                    "1", "1e" -> estrellas = "1 ⭐"
+                    "2", "2e" -> estrellas = "2 ⭐"
+                    "3", "3e" -> estrellas = "3 ⭐"
+                    "4", "4e" -> estrellas = "4 ⭐"
+                    "5", "5e" -> estrellas = "5 ⭐"
+                }
+                val direccion = camping.getString("Direccion")
+                val provincia = camping.getString("Provincia")
+                val municipio = camping.getString("Municipio")
+                val web = camping.getString("Web")
+                val email = camping.getString("Email")
+                val periodo = camping.getString("Periodo")
+                val dias = camping.getString("Días Periodo")
+                val modalidad = camping.getString("Modalidad")
+                var plazas_parcela = camping.getString("Plazas Parcela")
+                if (plazas_parcela == "" || plazas_parcela == " ") {
+                    plazas_parcela = "0"
+                }
+                var plazas_bungalow = camping.getString("Plaza Bungalows")
+                if (plazas_bungalow == "" || plazas_bungalow == " ") {
+                    plazas_bungalow = "0"
+                }
+                var libre_acampada = camping.getString("Plazas Libre Acampada")
+                if (libre_acampada == "" || libre_acampada == " ") {
+                    libre_acampada = "0"
+                }
                 val isFavorito = false
-            val campingObject = Camping(id+1, nombre, estrellas, direccion, provincia, municipio, web, email, periodo, dias, modalidad, plazas_parcela, plazas_bungalow, libre_acampada, isFavorito)
+                val campingObject = Camping(i+1, nombre, estrellas, direccion, provincia, municipio, web, email, periodo, dias, modalidad, plazas_parcela, plazas_bungalow, libre_acampada, isFavorito)
 
-            listaCampings.add(campingObject)
-        }
+                listaCampings.add(campingObject)
+            }
             withContext(Dispatchers.Main) {
                 callback(listaCampings)
             }

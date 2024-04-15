@@ -26,23 +26,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            MY_PERMISSIONS_REQUEST_INTERNET -> {
-                // Si la solicitud es cancelada, el array de resultados estará vacío.
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    // Permiso concedido
-                } else {
-                    // Permiso denegado
-                }
-                return
-            }
-            // Comprobar otros permisos si los hay
-        }
-    }
-
     fun showCampingDetail(camping: Camping) {
         val bundle = Bundle().apply {
             putSerializable("camping", camping)

@@ -108,7 +108,7 @@ class CampingInfo : Fragment() {
                 // Agrega el camping a la base de datos de favoritos
                 CoroutineScope(Dispatchers.IO).launch {
                     campingData.isFavorito = true
-                    userDao.insertAll(campingData)
+                    userDao.insert(campingData)
                 }
             } else {
                 imageView.setImageResource(R.drawable.black_like)
