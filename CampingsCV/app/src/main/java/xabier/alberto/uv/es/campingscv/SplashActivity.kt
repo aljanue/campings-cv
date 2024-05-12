@@ -16,13 +16,10 @@ class SplashActivity : AppCompatActivity() {
         Log.d("SplashActivity", "Esperando 3 segundos...")
 
         Handler(Looper.getMainLooper()).postDelayed({
-            // This method will be executed once the timer is over
-            // Start your app main activity
             startActivity(Intent(this,MainActivity::class.java))
 
             Log.d("SplashActivity", "Abriendo actividad principal")
 
-            // close this activity
             finish()
         }, SPLASH_TIME_OUT)
     }

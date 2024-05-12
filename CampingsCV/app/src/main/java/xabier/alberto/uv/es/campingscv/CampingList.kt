@@ -61,14 +61,12 @@ class CampingList : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                // Filtra tu lista de campings basándote en el texto de búsqueda
                 val filteredList = campings.filter { camping ->
                     camping.nombre!!.contains(newText ?: "", ignoreCase = true) ||
                             camping.provincia!!.contains(newText ?: "", ignoreCase = true) ||
                             camping.municipio!!.contains(newText ?: "", ignoreCase = true)
                 }
 
-                // Actualiza tu adaptador con la lista filtrada
                 campingAdapter.updateList(filteredList)
                 return false
             }
@@ -79,7 +77,6 @@ class CampingList : Fragment() {
         val rv: RecyclerView = view.findViewById(R.id.rv)
         rv.layoutManager = LinearLayoutManager(context)
         getData { campings ->
-            // Aquí puedes actualizar la UI con la lista de campings
             val rv: RecyclerView = view.findViewById(R.id.rv)
             rv.layoutManager = LinearLayoutManager(context)
             rv.adapter = MyAdapter(campings) { camping ->
@@ -97,6 +94,7 @@ class CampingList : Fragment() {
         val rv: RecyclerView = view?.findViewById(R.id.rv) ?: return false
         val adapter = rv.adapter as MyAdapter
         when (item.itemId) {
+            // Botón para ordenar por estrellas
             R.id.order_by_stars -> {
                 adapter.data = adapter.data.sortedByDescending {
                     try {
@@ -106,9 +104,11 @@ class CampingList : Fragment() {
                     }
                 }
             }
+            // Botón para ordenar por nombre
             R.id.order_by_name_a_z -> {
                 adapter.data = adapter.data.sortedBy { it.nombre }
             }
+            // Botón para ordenar por nombre a la inversa
             R.id.order_by_name_z_a -> {
                 adapter.data = adapter.data.sortedByDescending { it.nombre }
             }

@@ -5,6 +5,4 @@
     <string name="sort_by_name_z_a">Sort by name Z-A</string>
     <string name="open_on_maps">Open on Maps</string>
     <string name="open_website">Open website</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

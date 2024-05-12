@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Comprobar si ya tienes el permiso
+        // Comprobar si tienes permiso para conectar a internet
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
             != PackageManager.PERMISSION_GRANTED) {
             // Si no tienes el permiso, solicitarlo

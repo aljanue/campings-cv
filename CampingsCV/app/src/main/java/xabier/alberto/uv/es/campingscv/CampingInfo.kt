@@ -34,10 +34,9 @@ class CampingInfo : Fragment() {
 
         Log.d("InfoFragment", "ESTOY EN onCreateView")
 
-        // Aquí puedes obtener los datos del camping del Bundle y mostrarlos en la vista
+        // Obtenemos la información del camping seleccionado y la asignamos a los elementos de la vista
         val camping = arguments?.getSerializable("camping") as? Camping
 
-        // TODO: Mostrar los datos del camping en la vista
         val nombreID = view.findViewById<TextView>(R.id.nombre)
         val estrellasID = view.findViewById<TextView>(R.id.estrellas)
         val direccionID = view.findViewById<TextView>(R.id.direccion)
@@ -72,13 +71,14 @@ class CampingInfo : Fragment() {
         // Referencia al botón de favoritos
         val imageView = view.findViewById<ImageView>(R.id.favorito)
 
-// Obtén una referencia a tu base de datos
+        // Conectamos a la base de datos
         val db = Room.databaseBuilder(requireContext(),AppDatabase::class.java, "database").fallbackToDestructiveMigration().build()
         val userDao = db.userDao()
 
-// valores del camping
+        // Creamos un objeto camping temporal
         var campingData = Camping(camping?.cid, camping?.nombre, camping?.estrellas, direccion, camping?.provincia, camping?.municipio, web, camping?.email, camping?.periodo, camping?.dias, camping?.modalidad, camping?.plazas_parcela, camping?.plazas_bungalow, camping?.libre_acampada, camping?.isFavorito)
 
+        // Corrutina para comprobar la base de datos
         CoroutineScope(Dispatchers.IO).launch {
             // Comprueba si el camping está en la lista de favoritos
             val favoriteCamping = campingData.nombre?.let { userDao.findByName(it) }
@@ -87,11 +87,12 @@ class CampingInfo : Fragment() {
             }
 
             withContext(Dispatchers.Main) {
-                // Establecer el tag inicial
                 if (campingData.isFavorito == true) {
+                    // El camping está en favoritos, hacemos el botón rojo
                     imageView.setImageResource(R.drawable.red_like)
                     imageView.setTag(R.drawable.red_like)
                 } else {
+                    // El camping no está en favoritos, hacemos el botón negro
                     imageView.setImageResource(R.drawable.black_like)
                     imageView.setTag(R.drawable.black_like)
                 }
@@ -100,21 +101,23 @@ class CampingInfo : Fragment() {
 
 
         imageView.setOnClickListener {
-            // Comprueba el tag actual y cambia el recurso de la imagen y el tag en consecuencia
+            // Comprueba el color del botón
             if (imageView.getTag() == R.drawable.black_like) {
+                // Cambiamos el botón a rojo
                 imageView.setImageResource(R.drawable.red_like)
                 imageView.setTag(R.drawable.red_like)
 
-                // Agrega el camping a la base de datos de favoritos
+                // Agrega el camping a favoritos
                 CoroutineScope(Dispatchers.IO).launch {
                     campingData.isFavorito = true
                     userDao.insert(campingData)
                 }
             } else {
+                // Cambiamos el botón a negro
                 imageView.setImageResource(R.drawable.black_like)
                 imageView.setTag(R.drawable.black_like)
 
-                // Elimina el camping de la base de datos de favoritos
+                // Elimina el camping de favoritos
                 CoroutineScope(Dispatchers.IO).launch {
                     campingData.isFavorito = false
                     userDao.delete(campingData)
@@ -122,7 +125,7 @@ class CampingInfo : Fragment() {
             }
         }
 
-        // Activamos menú de opciones
+        // Activamos el menú de opciones
         setHasOptionsMenu(true)
 
         return view
@@ -137,24 +140,30 @@ class CampingInfo : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
+            // Botón de dirección en el mapa
             R.id.maps -> {
                 if (direccion != null && direccion != "" && direccion != " ") {
+                    // La dirección está incluida
                     val mapIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("geo:0,0?q=" + direccion))
                     startActivity(mapIntent)
                 }
                 else {
+                    // La dirección no está incluida
                     val toast = android.widget.Toast.makeText(context, "No hay dirección", android.widget.Toast.LENGTH_SHORT)
                     toast.show()
                 }
             }
+            // Botón de página web
             R.id.website -> {
                 if (web != null && web != "" && web != " ") {
+                    // La pagina web existe
                     if (!web!!.startsWith("http://") && !web!!.startsWith("https://"))
                         web = "http://" + web
                     val browserIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(web))
                     startActivity(browserIntent)
                 }
                 else {
+                    // No tiene página web
                     val toast = android.widget.Toast.makeText(context, "No hay página web", android.widget.Toast.LENGTH_SHORT)
                     toast.show()
                 }

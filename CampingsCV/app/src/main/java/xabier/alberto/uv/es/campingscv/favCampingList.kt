@@ -29,21 +29,8 @@ class favCampingList : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fav_camping_list, container, false)
 
-        // Obtén una referencia a tu base de datos
-        val db = Room.databaseBuilder(requireContext(), AppDatabase::class.java, "database").build()
-        CoroutineScope(Dispatchers.IO).launch {
-            val userDao = db.userDao()
+        setupCampingList(view)
 
-            val campings = userDao.getAll()
-
-            withContext(Dispatchers.Main) {
-                val rv: RecyclerView = view.findViewById(R.id.rv)
-                rv.layoutManager = LinearLayoutManager(context)
-                rv.adapter = favAdapter(campings) { camping ->
-                    (requireActivity() as MainActivity).showCampingDetail(camping as Camping)
-                }
-            }
-        }
         return view
     }
 
@@ -54,7 +41,7 @@ class favCampingList : Fragment() {
     }
 
     private fun setupCampingList(view: View) {
-        // Obtén una referencia a tu base de datos
+        // Accedemos a la base de datos
         val db = Room.databaseBuilder(requireContext(), AppDatabase::class.java, "database").build()
         CoroutineScope(Dispatchers.IO).launch {
             val userDao = db.userDao()
@@ -64,6 +51,7 @@ class favCampingList : Fragment() {
             withContext(Dispatchers.Main) {
                 val rv: RecyclerView = view.findViewById(R.id.rv)
                 rv.layoutManager = LinearLayoutManager(context)
+                // Mostramos los campings favoritos
                 rv.adapter = favAdapter(campings) { camping ->
                     (requireActivity() as MainActivity).showCampingDetail(camping as Camping)
                 }
